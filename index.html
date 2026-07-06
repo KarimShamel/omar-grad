@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congrats My Engineer Omar! 🎓✨</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0033, #4d004d, #001a33);
+            color: #fff;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        /* --- CURTAIN WRAPPER --- */
+        #curtain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 9999;
+            display: flex;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .curtain-side {
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to bottom, #800020, #4a0011);
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+            position: relative;
+            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        /* Curtain pleat texture simulation */
+        .curtain-side::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0.2) 20px, rgba(255,255,255,0.05) 40px, rgba(0,0,0,0) 60px);
+        }
+
+        /* Center Button over Curtains */
+        #open-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(45deg, #ff007f, #ff0055);
+            border: 3px solid #fff;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.8), inset 0 0 10px rgba(255,255,255,0.5);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #open-btn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 50px rgba(255, 0, 127, 1);
+        }
+
+        /* Animated State */
+        .opened .left-curtain {
+            transform: translateX(-100%);
+        }
+        .opened .right-curtain {
+            transform: translateX(100%);
+        }
+        .opened #open-btn {
+            display: none;
+        }
+
+        /* --- MAIN CONTENT --- */
+        #main-content {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 2s ease 1s;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .visible #main-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Music Floating Control */
+        #music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* Headings & Typography */
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(45deg, #00f2fe, #4facfe, #ff007f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(79, 172, 254, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .nickname {
+            font-size: 2.2rem;
+            color: #ff477e;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: block;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: #00ffd5;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        /* Featured Intro Picture */
+        .intro-pic-container {
+            margin: 30px auto;
+            max-width: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 4px solid #4facfe;
+            box-shadow: 0 0 30px rgba(79, 172, 254, 0.6);
+        }
+
+        .intro-pic-container img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Gallery Grid */
+        .gallery-title {
+            font-size: 2.5rem;
+            margin: 60px 0 30px;
+            color: #ff007f;
+            text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-10px) rotate(2deg);
+            border-color: #ff007f;
+            box-shadow: 0 15px 30px rgba(255, 0, 127, 0.5);
+        }
+
+        .grid-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .grid-item p {
+            padding: 15px;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(255, 71, 126, 0.6); }
+            100% { transform: scale(1.05); text-shadow: 0 0 25px rgba(255, 71, 126, 1); }
+        }
+
+        /* Responsive design adjustments */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .nickname { font-size: 1.8rem; }
+            .tagline { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" src="bahaa.mp3" loop></audio>
+
+    <!-- Music Control Button -->
+    <button id="music-control" onclick="toggleMusic()" style="display: none;">
+        <span id="music-icon">🎵</span> <span id="music-text">Pause Music</span>
+    </button>
+
+    <!-- Curtain Wrapper -->
+    <div id="curtain-container">
+        <div class="curtain-side left-curtain"></div>
+        <button id="open-btn" onclick="revealGift()">Open Gift 🎁</button>
+        <div class="curtain-side right-curtain"></div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="main-content">
+        <header>
+            <h1>Happy Graduation, Omar!</h1>
+            <span class="nickname">Congrats Katkotyyyy! ❤️</span>
+            <p class="tagline">To My Favourite Engineer in the Whole World 🛠️🚀</p>
+        </header>
+
+        <!-- First Featured Picture (Shown right after curtains open) -->
+        <section class="intro-pic-container">
+            <!-- Replace 'intro.jpg' with your starting main photo filename -->
+            <img src="intro.jpg" alt="Our Special Starting Moment" onerror="this.src='https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000';">
+        </section>
+
+        <!-- Romantic & Celebratory Memory Grid -->
+        <section>
+            <h2 class="gallery-title">Our Best Moments Together 📸</h2>
+            <div class="grid-container">
+                <!-- Photo 1 -->
+                <div class="grid-item">
+                    <img src="1.jpg" alt="Memory 1" onerror="this.src='https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?q=80&w=500';">
+                    <p>Always by your side Proudest moment! ✨</p>
+                </div>
+                <!-- Photo 2 -->
+                <div class="grid-item">
+                    <img src="2.jpg" alt="Memory 2" onerror="this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=500';">
+                    <p>The hardest working engineer I know 💻</p>
+                </div>
+                <!-- Photo 3 -->
+                <div class="grid-item">
+                    <img src="6.jpg" alt="Memory 3" onerror="this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=500';">
+                    <p>To the laughter and steps we shared 🤍</p>
+                </div>
+                <!-- Photo 4 -->
+                <div class="grid-item">
+                    <img src="8.jpg" alt="Memory 4" onerror="this.src='https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=500';">
+                    <p>Next stop: Forever together! 💍</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
+        const musicText = document.getElementById('music-text');
+        const musicIcon = document.getElementById('music-icon');
+
+        function revealGift() {
+            // Open the curtains
+            document.getElementById('curtain-container').classList.add('opened');
+            document.body.classList.add('visible');
+
+            // Play the music asset
+            audio.play().then(() => {
+                musicBtn.style.display = 'flex';
+            }).catch(error => {
+                console.log("Autoplay blocked by browser. Interaction allowed toggle manually.");
+                musicBtn.style.display = 'flex';
+                musicText.innerText = "Play Music";
+                musicIcon.innerText = "🔇";
+            });
+
+            // Fade curtain out entirely after animation ends so user can scroll properly
+            setTimeout(() => {
+                document.getElementById('curtain-container').style.display = 'none';
+            }, 1500);
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicText.innerText = "Pause Music";
+                musicIcon.innerText = "🎵";
+            } else {
+                audio.pause();
+                musicText.innerText = "Play Music";
+                musicIcon.innerText = "🔇";
+            }
+        }
+    </script>
+</body>
+</html>
